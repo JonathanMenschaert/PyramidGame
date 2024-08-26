@@ -6,22 +6,28 @@
 // Sets default values
 ATileBase::ATileBase()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
 void ATileBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
-// Called every frame
-void ATileBase::Tick(float DeltaTime)
+void ATileBase::AddAdjacentTile(ETileDirection tileDirection, TWeakPtr<ATileBase> tile)
 {
-	Super::Tick(DeltaTime);
-
+	AdjacentTiles.Add(tileDirection, tile);
+	TileDirections.AddUnique(tileDirection);
 }
+
+void ATileBase::SetTileType(ETileType tileType)
+{
+	TileType = tileType;
+}
+
+void ATileBase::UpdateTile()
+{
+}
+
 

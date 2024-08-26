@@ -6,7 +6,11 @@
 #include "GameFramework/Actor.h"
 #include "LabyrinthGenerator.generated.h"
 
-UCLASS()
+class UGeneratorData;
+class ATileBase;
+class UTexture2D;
+
+UCLASS(BlueprintType)
 class LABYRINTH_API ALabyrinthGenerator : public AActor
 {
 	GENERATED_BODY()
@@ -15,12 +19,22 @@ public:
 	// Sets default values for this actor's properties
 	ALabyrinthGenerator();
 
+	UFUNCTION(BlueprintCallable)
+	void Generate();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
+	UGeneratorData* GeneratorData;
+
+private:
+
+	void ResetGenerator();
+
+	void PopulateFromImage(UTexture2D* image, int imagePixelAmount);
+
+	TArray<ATileBase*> Tiles;
 
 };
