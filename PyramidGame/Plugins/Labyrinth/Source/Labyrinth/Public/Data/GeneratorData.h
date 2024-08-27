@@ -26,4 +26,10 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<ATileBase> TileClass;
+
+	UPROPERTY(EditAnywhere)
+	FVector2D StartTileCoordinate;
+
+	UPROPERTY(EditAnywhere)
+	float TileSize;
 };

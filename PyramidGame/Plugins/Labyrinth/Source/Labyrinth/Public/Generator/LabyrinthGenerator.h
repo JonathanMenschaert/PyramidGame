@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Data/GeneratorData.h"
 #include "LabyrinthGenerator.generated.h"
 
 class UGeneratorData;
@@ -34,6 +35,12 @@ private:
 	void ResetGenerator();
 
 	void PopulateFromImage(UTexture2D* image, int imagePixelAmount);
+
+	void TrySetTileDirection(ATileBase* tile, int neighbourIdx, int x, int y, uint8 directionValue, ETileDirection direction);
+
+	inline void IndexToCoordinate(int i, int& x, int& y) const;
+	inline bool IsValidIndex(int i, int coordX, int coordY) const;
+	inline bool IsValidDirection(uint8 directionValue, uint8 direction) const;
 
 	TArray<ATileBase*> Tiles;
 

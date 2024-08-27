@@ -15,9 +15,14 @@ void ATileBase::BeginPlay()
 
 }
 
-void ATileBase::AddAdjacentTile(ETileDirection tileDirection, TWeakPtr<ATileBase> tile)
+void ATileBase::AddAdjacentTile(ETileDirection tileDirection, ATileBase* tile)
 {
 	AdjacentTiles.Add(tileDirection, tile);
+	
+}
+
+void ATileBase::AddTileDirection(ETileDirection tileDirection)
+{
 	TileDirections.AddUnique(tileDirection);
 }
 
@@ -28,6 +33,10 @@ void ATileBase::SetTileType(ETileType tileType)
 
 void ATileBase::UpdateTile()
 {
+	UpdateTileDirections(TileDirections);
 }
 
+void ATileBase::UpdateTileDirections_Implementation(const TArray<ETileDirection>& directions)
+{
+}
 

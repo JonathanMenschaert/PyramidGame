@@ -16,7 +16,8 @@ public:
 	// Sets default values for this actor's properties
 	ATileBase();
 
-	void AddAdjacentTile(ETileDirection tileDirection, TWeakPtr<ATileBase> tile);
+	void AddAdjacentTile(ETileDirection tileDirection, ATileBase* tile);
+	void AddTileDirection(ETileDirection tileDirection);
 	void SetTileType(ETileType tileType);
 
 	void UpdateTile();
@@ -25,12 +26,15 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnTileDirectionsUpdated"))
+	void UpdateTileDirections(const TArray<ETileDirection>& directions); 
+
 private:
 
-	TMap<ETileDirection, TWeakPtr<ATileBase>> AdjacentTiles;
+	UPROPERTY()
+	TMap<ETileDirection, ATileBase*> AdjacentTiles;
 	
 	TArray<ETileDirection> TileDirections;
 
 	ETileType TileType;
-
 };

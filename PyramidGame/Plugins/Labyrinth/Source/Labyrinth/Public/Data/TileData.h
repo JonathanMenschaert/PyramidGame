@@ -7,17 +7,19 @@
 UENUM(BlueprintType)
 enum class ETileDirection : uint8
 {
-	LEFT		UMETA(DisplayName = "Left"),
-	RIGHT		UMETA(DisplayName = "Right"),
-	UP			UMETA(DisplayName = "Up"),
-	DOWN		UMETA(DisplayName = "Down")
+	NONE = 0	UMETA(Hidden),
+	LEFT = 1	UMETA(DisplayName = "Left"),
+	RIGHT = 2	UMETA(DisplayName = "Right"),
+	UP = 4		UMETA(DisplayName = "Up"),
+	DOWN = 8	UMETA(DisplayName = "Down")
 };
 
 
 UENUM(BlueprintType)
 enum class ETileType : uint8
 {
-	VOID		UMETA(DisplayName = "Void"),
-	HALLWAY		UMETA(DisplayName = "Hallway"),
-	ROOM		UMETA(DisplayName = "Room")
+	NONE = 0	UMETA(DisplayName = "None"),
+	VOID = 1	UMETA(DisplayName = "Void"),
+	HALLWAY = 2	UMETA(DisplayName = "Hallway"),
+	ROOM = 4	UMETA(DisplayName = "Room")
 };

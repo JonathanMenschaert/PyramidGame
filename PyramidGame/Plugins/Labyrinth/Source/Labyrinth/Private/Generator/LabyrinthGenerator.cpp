@@ -2,7 +2,6 @@
 
 
 #include "Generator/LabyrinthGenerator.h"
-#include "Data/GeneratorData.h"
 #include "Tiles/TileBase.h"
 #include "Labyrinth.h"
 
@@ -24,17 +23,15 @@ void ALabyrinthGenerator::Generate()
 
 	ResetGenerator();
 
-	UGeneratorData* generatorData = GeneratorData;
-
 	//Set labyrinth size to the texture dimensions if a template is present
-	bool isTemplatePresent = IsValid(generatorData->StartTemplate);
+	bool isTemplatePresent = IsValid(GeneratorData->StartTemplate);
 	if (isTemplatePresent)
 	{
-		generatorData->SizeX = generatorData->StartTemplate->GetSizeX();
-		generatorData->SizeY = generatorData->StartTemplate->GetSizeY();
+		GeneratorData->SizeX = GeneratorData->StartTemplate->GetSizeX();
+		GeneratorData->SizeY = GeneratorData->StartTemplate->GetSizeY();
 	}
 
-	int amountOfTiles = generatorData->SizeX * generatorData->SizeY;
+	int amountOfTiles = GeneratorData->SizeX * GeneratorData->SizeY;
 	if (amountOfTiles <= 0)
 	{
 		UE_LOG(LogLabyrinth, Error, TEXT("Labyrinth contains a dimension with incorrect size!"));
@@ -42,7 +39,7 @@ void ALabyrinthGenerator::Generate()
 	}
 	Tiles.Reserve(amountOfTiles);
 
-	if (!IsValid(generatorData->TileClass))
+	if (!IsValid(GeneratorData->TileClass))
 	{
 		UE_LOG(LogLabyrinth, Error, TEXT("No Tile class is set in the generator data!"));
 		return;
@@ -50,12 +47,12 @@ void ALabyrinthGenerator::Generate()
 
 	for (int i{ 0 }; i < amountOfTiles; ++i)
 	{
-		Tiles.Add(NewObject<ATileBase>(this, generatorData->TileClass));
+		Tiles.Add(GetWorld()->SpawnActor<ATileBase>(GeneratorData->TileClass, GetActorTransform()));
 	}
 
 	if (isTemplatePresent)
 	{
-		PopulateFromImage(generatorData->StartTemplate, amountOfTiles);
+		PopulateFromImage(GeneratorData->StartTemplate, amountOfTiles);
 	}
 	else
 	{
@@ -91,11 +88,57 @@ void ALabyrinthGenerator::PopulateFromImage(UTexture2D* image, int imagePixelAmo
 	const FColor* pixelData = static_cast<const FColor*>(textureData.LockReadOnly());	
 	FMemory::Memcpy(imagePixels.GetData(), pixelData, sizeof(FColor) * imagePixelAmount);
 	textureData.Unlock();
-
-	for (const FColor& pixel : imagePixels)
+	 
+	const FVector generatorLocation = GetActorLocation();
+	for (int i{ 0 }; i < imagePixelAmount; ++i)
 	{
-		//FString colorStr = FString::FromInt(pixel.R) + " " + FString::FromInt(pixel.G) + " " + FString::FromInt(pixel.B) + " " + FString::FromInt(pixel.A);
-		//UE_LOG(LogLabyrinth, Log, TEXT("Color: %s"), *colorStr);
+		int x = 0;
+		int y = 0;
+
+		IndexToCoordinate(i, x, y);
+		ATileBase* tile = Tiles[i];
+		tile->SetActorLocation(generatorLocation + FVector{ x * GeneratorData->TileSize, y * GeneratorData->TileSize, 0.f });
+
+		TrySetTileDirection(tile, i - 1, x, y, imagePixels[i].R, ETileDirection::LEFT);
+		TrySetTileDirection(tile, i + 1, x, y, imagePixels[i].R, ETileDirection::RIGHT);
+		TrySetTileDirection(tile, i + GeneratorData->SizeY, x, y, imagePixels[i].R, ETileDirection::UP);
+		TrySetTileDirection(tile, i - GeneratorData->SizeY, x, y, imagePixels[i].R, ETileDirection::DOWN);
+
+		tile->UpdateTile();
 	}
+}
+
+void ALabyrinthGenerator::TrySetTileDirection(ATileBase* tile, int neighbourIdx, int x, int y, uint8 directionValue, ETileDirection direction)
+{
+	if (IsValidIndex(neighbourIdx, x, y))
+	{
+		tile->AddAdjacentTile(direction, Tiles[neighbourIdx]);
+	}
+
+	if (IsValidDirection(directionValue, static_cast<uint8>(direction)))
+	{
+		tile->AddTileDirection(direction);
+	}
+}
+
+inline bool ALabyrinthGenerator::IsValidDirection(uint8 directionValue, uint8 direction) const
+{
+	return directionValue & direction;
+}
+
+inline void ALabyrinthGenerator::IndexToCoordinate(int i, int& x, int& y) const
+{
+	x = i / GeneratorData->SizeX;
+	y = i % GeneratorData->SizeX;
+}
+
+inline bool ALabyrinthGenerator::IsValidIndex(int i, int coordX, int coordY) const
+{
+	int x = -1;
+	int y = -1;
+
+	IndexToCoordinate(i, x, y);
+
+	return i >= 0 && i < Tiles.Num() && (coordX == x || coordY == y);
 }
 
