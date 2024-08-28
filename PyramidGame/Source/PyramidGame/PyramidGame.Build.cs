@@ -13,7 +13,9 @@ public class PyramidGame : ModuleRules
 			"CoreUObject", 
 			"Engine", 
 			"InputCore",
-			"Labyrinth"
+			"EnhancedInput",
+            "AIModule",
+            "Labyrinth"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] 
