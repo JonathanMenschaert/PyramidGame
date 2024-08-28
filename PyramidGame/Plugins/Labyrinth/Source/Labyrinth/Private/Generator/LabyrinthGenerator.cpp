@@ -58,6 +58,19 @@ void ALabyrinthGenerator::Generate()
 	{
 		UE_LOG(LogLabyrinth, Warning, TEXT("Random generation not implemented yet!"));
 	}
+
+	FLabyrinthGeneratorResult result{};
+	result.GeneratedTiles = Tiles;
+	result.SizeX = GeneratorData->SizeX;
+	result.SizeY = GeneratorData->SizeY;
+	result.TileSize = GeneratorData->TileSize;
+	result.CenterPoint = GetActorLocation() + FVector{ 
+		GeneratorData->SizeX * GeneratorData->TileSize * 0.5f, 
+		GeneratorData->SizeY * GeneratorData->TileSize * 0.5f, 
+		0.f 
+	};
+
+	OnGeneratorFinished(result);
 }
 
 // Called when the game starts or when spawned
@@ -65,6 +78,10 @@ void ALabyrinthGenerator::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+void ALabyrinthGenerator::OnGeneratorFinished_Implementation(const FLabyrinthGeneratorResult& result)
+{
 }
 
 void ALabyrinthGenerator::ResetGenerator()

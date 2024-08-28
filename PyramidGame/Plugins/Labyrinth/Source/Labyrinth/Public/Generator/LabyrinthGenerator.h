@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Data/GeneratorData.h"
+#include "Data/LabyrinthDefinitions.h"
 #include "LabyrinthGenerator.generated.h"
 
 class UGeneratorData;
@@ -26,6 +27,9 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnGeneratorFinished"))
+	void OnGeneratorFinished(UPARAM(DisplayName = "Result") const FLabyrinthGeneratorResult& result);
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
 	UGeneratorData* GeneratorData;

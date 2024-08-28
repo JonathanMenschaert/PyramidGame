@@ -27,7 +27,10 @@ protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnTileDirectionsUpdated"))
-	void UpdateTileDirections(const TArray<ETileDirection>& directions); 
+	void UpdateTileDirections(UPARAM(DisplayName = "Directions") const TArray<ETileDirection>&directions, UPARAM(DisplayName = "Adjacent Tiles") const TMap<ETileDirection, ATileBase*>& adjacentTiles);
+
+	UPROPERTY(BlueprintReadOnly)
+	ETileType TileType = ETileType::HALLWAY;
 
 private:
 
@@ -36,5 +39,4 @@ private:
 	
 	TArray<ETileDirection> TileDirections;
 
-	ETileType TileType;
 };

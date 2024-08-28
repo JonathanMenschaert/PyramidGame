@@ -18,7 +18,7 @@ enum class ETileDirection : uint8
 UENUM(BlueprintType)
 enum class ETileType : uint8
 {
-	NONE = 0	UMETA(DisplayName = "None"),
+	NONE = 0	UMETA(Hidden),
 	VOID = 1	UMETA(DisplayName = "Void"),
 	HALLWAY = 2	UMETA(DisplayName = "Hallway"),
 	ROOM = 4	UMETA(DisplayName = "Room")

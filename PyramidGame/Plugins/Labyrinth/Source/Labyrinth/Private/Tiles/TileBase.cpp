@@ -33,10 +33,10 @@ void ATileBase::SetTileType(ETileType tileType)
 
 void ATileBase::UpdateTile()
 {
-	UpdateTileDirections(TileDirections);
+	UpdateTileDirections(TileDirections, AdjacentTiles);
 }
 
-void ATileBase::UpdateTileDirections_Implementation(const TArray<ETileDirection>& directions)
+void ATileBase::UpdateTileDirections_Implementation(const TArray<ETileDirection>& directions, const TMap<ETileDirection, ATileBase*>& adjacentTiles)
 {
 }
 
