@@ -15,7 +15,8 @@ public class PyramidGame : ModuleRules
 			"InputCore",
 			"EnhancedInput",
             "AIModule",
-            "Labyrinth"
+            "Labyrinth",
+			"NetCore"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] 
