@@ -6,6 +6,15 @@
 #include "Tiles/TileBase.h"
 #include "LabyrinthDefinitions.generated.h"
 
+USTRUCT(BlueprintType)
+struct FTreasureZone
+{
+	GENERATED_BODY()
+
+public:
+	TArray<ATileBase*> Treasures;
+};
+
 USTRUCT(Blueprintable, BlueprintType)
 struct FLabyrinthGeneratorResult
 {
@@ -25,4 +34,7 @@ struct FLabyrinthGeneratorResult
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector CenterPoint;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FTreasureZone> TreasureZones;
 };

@@ -12,6 +12,7 @@ class UGeneratorData;
 class ATileBase;
 class UTexture2D;
 
+
 UCLASS(BlueprintType)
 class LABYRINTH_API ALabyrinthGenerator : public AActor
 {
@@ -34,6 +35,15 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
 	UGeneratorData* GeneratorData;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
+	int AmountOfZones = 5;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
+	int ZoneRadius = 2;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
+	int TreasuresPerZone = 4;
+
 private:
 
 	void ResetGenerator();
@@ -42,10 +52,22 @@ private:
 
 	void TrySetTileDirection(ATileBase* tile, int neighbourIdx, int x, int y, uint8 directionValue, ETileDirection direction);
 
+	void AddTreasuresZones(int amountZones, int tileRadius, int treasuresPerZone);
+
+	void AddTreasuresToZone(int zoneIdx, const FVector2f& tileCoordinates, int zoneRadius, int treasuresLeft);
+
+	bool IsZoneCenterValid(const TArray<FVector2f>& zoneCenters, const FVector2f& newZoneCenter, float minSpacingSq);
+
 	inline void IndexToCoordinate(int i, int& x, int& y) const;
+	inline int CoordinateToIndex(int x, int y) const;
 	inline bool IsValidIndex(int i, int coordX, int coordY) const;
+	inline bool IsValidIndex(int i) const;
 	inline bool IsValidDirection(uint8 directionValue, uint8 direction) const;
 
+	UPROPERTY()
 	TArray<ATileBase*> Tiles;
+
+	UPROPERTY()
+	TArray<FTreasureZone> TreasureZones;
 
 };

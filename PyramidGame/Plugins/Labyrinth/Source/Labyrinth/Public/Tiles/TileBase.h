@@ -22,6 +22,10 @@ public:
 
 	void UpdateTile();
 
+	bool IsValidTreasureTile();
+	void AddTreasure(int treasureIdx, int zoneIdx);
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -29,14 +33,23 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnTileDirectionsUpdated"))
 	void UpdateTileDirections(UPARAM(DisplayName = "Directions") const TArray<ETileDirection>&directions, UPARAM(DisplayName = "Adjacent Tiles") const TMap<ETileDirection, ATileBase*>& adjacentTiles);
 
+	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnTreasureAdded"))
+	void OnTreasureAdded(UPARAM(DisplayName = "Zone Id") int zoneIdx, UPARAM(DisplayName = "Treasure Id") int treasureIdx);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	TArray<ETileDirection> GetTreasureDirections() const;
+
 	UPROPERTY(BlueprintReadOnly)
 	ETileType TileType = ETileType::HALLWAY;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TArray<ETileDirection> TileDirections;
 private:
 
 	UPROPERTY()
 	TMap<ETileDirection, ATileBase*> AdjacentTiles;
 	
-	TArray<ETileDirection> TileDirections;
+
+	bool HasTreasure;
 
 };
