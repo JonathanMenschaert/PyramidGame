@@ -19,6 +19,7 @@ public:
 	void AddAdjacentTile(ETileDirection tileDirection, ATileBase* tile);
 	void AddTileDirection(ETileDirection tileDirection);
 	void SetTileType(ETileType tileType);
+	void SetTileMetaData(uint8 data);
 
 	void UpdateTile();
 
@@ -32,9 +33,15 @@ protected:
 
 	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnTileDirectionsUpdated"))
 	void UpdateTileDirections(UPARAM(DisplayName = "Directions") const TArray<ETileDirection>&directions, UPARAM(DisplayName = "Adjacent Tiles") const TMap<ETileDirection, ATileBase*>& adjacentTiles);
+	void UpdateTileDirections_Implementation(const TArray<ETileDirection>& directions, const TMap<ETileDirection, ATileBase*>& adjacentTiles);
 
 	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnTreasureAdded"))
 	void OnTreasureAdded(UPARAM(DisplayName = "Zone Id") int zoneIdx, UPARAM(DisplayName = "Treasure Id") int treasureIdx);
+	void OnTreasureAdded_Implementation(int zoneIdx, int treasureIdx);
+
+	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnTileMetaData"))
+	void OnTileMetaData(UPARAM(DisplayName = "Meta Data") const TArray<ETileMetaData>& metaData);
+	void OnTileMetaData_Implementation(const TArray<ETileMetaData>& metaData);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	TArray<ETileDirection> GetTreasureDirections() const;
@@ -44,6 +51,10 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TArray<ETileDirection> TileDirections;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TArray<ETileMetaData> TileMetaData;
+
 private:
 
 	UPROPERTY()

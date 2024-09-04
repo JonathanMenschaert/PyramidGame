@@ -32,3 +32,13 @@ UClass* AGameModeLabyrinth::GetDefaultPawnClassForController_Implementation(ACon
 	
 	return DefaultPawnClass;
 }
+
+void AGameModeLabyrinth::StartPlay()
+{
+	OnInitializeGame();
+	Super::StartPlay();
+}
+
+void AGameModeLabyrinth::OnInitializeGame_Implementation()
+{
+}

@@ -59,7 +59,11 @@ void ALabyrinthGenerator::Generate()
 		UE_LOG(LogLabyrinth, Warning, TEXT("Random generation not implemented yet!"));
 	}
 
-	AddTreasuresZones(AmountOfZones, ZoneRadius, TreasuresPerZone);
+	for (ATileBase* tile : Tiles)
+	{
+		tile->UpdateTile();
+	}
+	AddTreasuresZones(GeneratorData->AmountOfZones, GeneratorData->ZoneRadius, GeneratorData->TreasuresPerZone);
 
 	FLabyrinthGeneratorResult result{};
 	result.GeneratedTiles = Tiles;
@@ -117,14 +121,16 @@ void ALabyrinthGenerator::PopulateFromImage(UTexture2D* image, int imagePixelAmo
 
 		IndexToCoordinate(i, x, y);
 		ATileBase* tile = Tiles[i];
+		FColor tileValue = imagePixels[i];
 		tile->SetActorLocation(generatorLocation + FVector{ x * GeneratorData->TileSize, y * GeneratorData->TileSize, 0.f });
 
-		TrySetTileDirection(tile, i - 1, x, y, imagePixels[i].R, ETileDirection::LEFT);
-		TrySetTileDirection(tile, i + 1, x, y, imagePixels[i].R, ETileDirection::RIGHT);
-		TrySetTileDirection(tile, i + GeneratorData->SizeY, x, y, imagePixels[i].R, ETileDirection::UP);
-		TrySetTileDirection(tile, i - GeneratorData->SizeY, x, y, imagePixels[i].R, ETileDirection::DOWN);
-
-		tile->UpdateTile();
+		TrySetTileDirection(tile, i - 1, x, y, tileValue.R, ETileDirection::LEFT);
+		TrySetTileDirection(tile, i + 1, x, y, tileValue.R, ETileDirection::RIGHT);
+		TrySetTileDirection(tile, i + GeneratorData->SizeY, x, y, tileValue.R, ETileDirection::UP);
+		TrySetTileDirection(tile, i - GeneratorData->SizeY, x, y, tileValue.R, ETileDirection::DOWN);
+		
+		tile->SetTileType(static_cast<ETileType>(tileValue.G));
+		tile->SetTileMetaData(tileValue.B);
 	}
 }
 
@@ -152,7 +158,7 @@ void ALabyrinthGenerator::AddTreasuresZones(int amountZones, int zoneRadius, int
 		int y{};
 		IndexToCoordinate(randIdx, x, y);
 
-		if (FVector2f newCenter{ static_cast<float>(x), static_cast<float>(y) }; IsZoneCenterValid(zoneCenters, newCenter, 16.f))
+		if (FVector2f newCenter{ static_cast<float>(x), static_cast<float>(y) }; IsZoneCenterValid(zoneCenters, newCenter, GeneratorData->ZoneSpacingSq))
 		{
 			zoneCenters.Add(newCenter);
 		}
@@ -178,7 +184,9 @@ void ALabyrinthGenerator::AddTreasuresToZone(int zoneIdx, const FVector2f& tileC
 	int coordYMin = y - zoneRadius;
 	int coordYMax = y + zoneRadius;
 
-	int amountOfTiles = (coordXMax - coordXMin) * (coordYMax - coordYMin);
+	TArray<int> validTiles{};
+
+	validTiles.Reserve((coordXMax - coordXMin) * (coordYMax - coordYMin));
 
 	for (int coordX{ coordXMin }; coordX < coordXMax; ++coordX)
 	{
@@ -187,25 +195,27 @@ void ALabyrinthGenerator::AddTreasuresToZone(int zoneIdx, const FVector2f& tileC
 			int idx = CoordinateToIndex(coordX, coordY);
 			if (!IsValidIndex(idx) || !Tiles[idx]->IsValidTreasureTile())
 			{
-				--amountOfTiles;
 				continue;
 			}
+			validTiles.Add(idx);
+		}
+	}
 
-			float randNumber = FMath::RandRange(0.f, 1.f);
-			float treasureChance = treasuresLeft / static_cast<float>(amountOfTiles);
-			if (randNumber <= treasureChance)
-			{
-				Tiles[idx]->AddTreasure(treasuresLeft - 1, zoneIdx);
-				TreasureZones[zoneIdx].Treasures.Add(Tiles[idx]);
-				--treasuresLeft;
-			}
+	for (int idx{}; idx < validTiles.Num(); ++idx)
+	{
+		float randNumber = FMath::RandRange(0.f, 1.f);
+		float treasureChance = treasuresLeft / static_cast<float>(validTiles.Num() - idx);
 
-			if (treasuresLeft <= 0)
-			{
-				return;
-			}
+		if (randNumber <= treasureChance)
+		{
+			--treasuresLeft;
+			Tiles[validTiles[idx]]->AddTreasure(treasuresLeft, zoneIdx);
+			TreasureZones[zoneIdx].Treasures.Add(Tiles[validTiles[idx]]);
+		}
 
-			--amountOfTiles;
+		if (treasuresLeft <= 0)
+		{
+			return;
 		}
 	}
 }

@@ -16,7 +16,13 @@ class PYRAMIDGAME_API AGameModeLabyrinth : public AGameMode
 public:
 	virtual UClass* GetDefaultPawnClassForController_Implementation(AController* InController) override;
 
+	virtual void StartPlay() override;
+
 protected:
+
+	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnInitializeGame"))
+	void OnInitializeGame();
+	void OnInitializeGame_Implementation();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Classes")
 	TSubclassOf<ACharacter> MummyClass;

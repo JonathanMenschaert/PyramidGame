@@ -23,3 +23,17 @@ enum class ETileType : uint8
 	HALLWAY = 2	UMETA(DisplayName = "Hallway"),
 	ROOM = 4	UMETA(DisplayName = "Room")
 };
+
+UENUM(BlueprintType)
+enum class ETileMetaData : uint8
+{
+	NONE = 0			UMETA(Hidden),
+	METAOPTION1	= 1		UMETA(DisplayName = "Meta Option 1"),
+	METAOPTION2 = 2		UMETA(DisplayName = "Meta Option 2"),
+	METAOPTION3 = 4		UMETA(DisplayName = "Meta Option 3"),
+	METAOPTION4 = 8		UMETA(DisplayName = "Meta Option 4"),
+	METAOPTION5 = 16	UMETA(DisplayName = "Meta Option 5"),
+	METAOPTION6 = 32	UMETA(DisplayName = "Meta Option 6"),
+	METAOPTION7 = 64	UMETA(DisplayName = "Meta Option 7"),
+	METAOPTION8 = 128	UMETA(DisplayName = "Meta Option 8"),
+};

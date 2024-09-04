@@ -47,6 +47,21 @@ void ATileBase::SetTileType(ETileType tileType)
 	TileType = tileType;
 }
 
+void ATileBase::SetTileMetaData(uint8 data)
+{
+	TileMetaData.Empty();
+
+	for (int meta{ 1 }; meta < 256; meta *= 2)
+	{
+		if (meta & data)
+		{
+			TileMetaData.Add(static_cast<ETileMetaData>(meta));
+		}
+	}
+
+	OnTileMetaData(TileMetaData);
+}
+
 void ATileBase::UpdateTile()
 {
 	UpdateTileDirections(TileDirections, AdjacentTiles);
@@ -68,6 +83,11 @@ void ATileBase::UpdateTileDirections_Implementation(const TArray<ETileDirection>
 }
 
 void ATileBase::OnTreasureAdded_Implementation(int zoneIdx, int treasureIdx)
+{
+
+}
+
+void ATileBase::OnTileMetaData_Implementation(const TArray<ETileMetaData>& metaData)
 {
 
 }

@@ -35,15 +35,6 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
 	UGeneratorData* GeneratorData;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
-	int AmountOfZones = 5;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
-	int ZoneRadius = 2;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
-	int TreasuresPerZone = 4;
-
 private:
 
 	void ResetGenerator();

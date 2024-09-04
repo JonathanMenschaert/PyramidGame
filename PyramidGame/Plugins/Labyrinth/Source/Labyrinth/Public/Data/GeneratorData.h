@@ -15,21 +15,33 @@ class LABYRINTH_API UGeneratorData : public UDataAsset
 
 public:
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
 	UTexture2D* StartTemplate;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
 	int SizeX;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
 	int SizeY;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
 	TSubclassOf<ATileBase> TileClass;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
 	FVector2D StartTileCoordinate;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
 	float TileSize;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
+	int AmountOfZones = 5;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
+	int ZoneRadius = 2;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
+	int TreasuresPerZone = 4;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
+	float ZoneSpacingSq = 16.f;
 };
