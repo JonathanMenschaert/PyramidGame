@@ -2,11 +2,22 @@
 
 
 #include "Tiles/TileBase.h"
+#include "Net/UnrealNetwork.h"
+#include "Net/Core/PushModel/PushModel.h"
 
 // Sets default values
 ATileBase::ATileBase()
 	: HasTreasure{false}
 {
+}
+
+void ATileBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	FDoRepLifetimeParams sharedParams;
+	sharedParams.bIsPushBased = true;
+
+	DOREPLIFETIME_WITH_PARAMS_FAST(ATileBase, TileType, sharedParams);
+
 }
 
 // Called when the game starts or when spawned
@@ -34,7 +45,6 @@ TArray<ETileDirection> ATileBase::GetTreasureDirections() const
 void ATileBase::AddAdjacentTile(ETileDirection tileDirection, ATileBase* tile)
 {
 	AdjacentTiles.Add(tileDirection, tile);
-	
 }
 
 void ATileBase::AddTileDirection(ETileDirection tileDirection)
@@ -45,6 +55,7 @@ void ATileBase::AddTileDirection(ETileDirection tileDirection)
 void ATileBase::SetTileType(ETileType tileType)
 {
 	TileType = tileType;
+	MARK_PROPERTY_DIRTY_FROM_NAME(ATileBase, TileType, this);
 }
 
 void ATileBase::SetTileMetaData(uint8 data)

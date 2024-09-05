@@ -16,6 +16,8 @@ public:
 	// Sets default values for this actor's properties
 	ATileBase();
 
+	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
+
 	void AddAdjacentTile(ETileDirection tileDirection, ATileBase* tile);
 	void AddTileDirection(ETileDirection tileDirection);
 	void SetTileType(ETileType tileType);
@@ -46,7 +48,7 @@ protected:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	TArray<ETileDirection> GetTreasureDirections() const;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(Replicated, BlueprintReadOnly)
 	ETileType TileType = ETileType::HALLWAY;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)

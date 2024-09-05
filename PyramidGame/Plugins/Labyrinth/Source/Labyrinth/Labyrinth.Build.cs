@@ -38,6 +38,7 @@ public class Labyrinth : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
+				"NetCore"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

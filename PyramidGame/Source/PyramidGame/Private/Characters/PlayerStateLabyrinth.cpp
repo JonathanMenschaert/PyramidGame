@@ -18,6 +18,7 @@ void APlayerStateLabyrinth::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	sharedParams.bIsPushBased = true;
 
 	DOREPLIFETIME_WITH_PARAMS_FAST(APlayerStateLabyrinth, PlayerType, sharedParams);
+	DOREPLIFETIME_WITH_PARAMS_FAST(APlayerStateLabyrinth, MovesLeft, sharedParams);
 }
 
 void APlayerStateLabyrinth::CopyProperties(APlayerState* playerState)
@@ -35,10 +36,32 @@ void APlayerStateLabyrinth::CopyProperties(APlayerState* playerState)
 void APlayerStateLabyrinth::SetPlayerType(EPlayerType playerType)
 {
 	PlayerType = playerType;
+	MARK_PROPERTY_DIRTY_FROM_NAME(APlayerStateLabyrinth, PlayerType, this);
 }
 
-void APlayerStateLabyrinth::SetPushRepPlayerType(EPlayerType playerType)
+void APlayerStateLabyrinth::SetAmountMoves(int amountMoves)
 {
-	PlayerType = playerType;
-	MARK_PROPERTY_DIRTY_FROM_NAME(APlayerStateLabyrinth, PlayerType, this);
+	MovesLeft = amountMoves;
+	MARK_PROPERTY_DIRTY_FROM_NAME(APlayerStateLabyrinth, MovesLeft, this);
+}
+
+void APlayerStateLabyrinth::Move()
+{
+	--MovesLeft;
+	MARK_PROPERTY_DIRTY_FROM_NAME(APlayerStateLabyrinth, MovesLeft, this);
+}
+
+int APlayerStateLabyrinth::GetMovesLeft()
+{
+	return MovesLeft;
+}
+
+void APlayerStateLabyrinth::SER_Move_Implementation()
+{
+	Move();
+}
+
+void APlayerStateLabyrinth::SER_SetAmountMoves_Implementation(int amountMoves)
+{
+	SetAmountMoves(amountMoves);
 }

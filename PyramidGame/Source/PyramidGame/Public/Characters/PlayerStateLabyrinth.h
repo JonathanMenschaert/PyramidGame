@@ -28,8 +28,25 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void SetPlayerType(EPlayerType playerType);
 
-	void SetPushRepPlayerType(EPlayerType playerType);
+	UFUNCTION(BlueprintCallable)
+	void SetAmountMoves(int amountMoves);
+
+	UFUNCTION(BlueprintCallable)
+	void Move();
+
+	UFUNCTION(BlueprintCallable)
+	int GetMovesLeft();
+
+	UFUNCTION(Server, Reliable, BlueprintCallable)
+	void SER_SetAmountMoves(int amountMoves);
+
+	UFUNCTION(Server, Reliable, BlueprintCallable)
+	void SER_Move();
+
+
 	UPROPERTY(Replicated, BlueprintReadOnly)
 	EPlayerType PlayerType;
 	
+	UPROPERTY(Replicated, BlueprintReadOnly)
+	int MovesLeft;
 };
