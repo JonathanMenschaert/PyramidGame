@@ -19,6 +19,12 @@ public:
 	// Sets default values for this character's properties
 	APlayerCharacter();
 
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void GetTraceStartPoint(FVector& forward, FVector& location);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -36,11 +42,6 @@ protected:
 	UInputMappingContext* InputMapping;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadonly, Category = "Input")
-	UInputConfig* InputConfig;
-
-public:	
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	UInputConfig* InputConfig;	
 
 };

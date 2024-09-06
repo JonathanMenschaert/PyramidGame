@@ -8,6 +8,10 @@
 #include "EnhancedInputComponent.h"
 #include "Characters/InputConfig.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Util/InteractionInterface.h"
+
+#define ECC_TreasureObject ECollisionChannel::ECC_GameTraceChannel6
+#define ECC_LabyrinthWall ECollisionChannel::ECC_GameTraceChannel7
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -68,6 +72,37 @@ void APlayerCharacter::Look(const FInputActionValue& value)
 
 void APlayerCharacter::Interact(const FInputActionValue& value)
 {
+	FHitResult outHit{};
+
+	FVector forward;
+	FVector start;
+	GetTraceStartPoint(forward, start);
+
+	FVector validationLocation = GetActorLocation();
+
+	FCollisionQueryParams queryParams{};
+	queryParams.AddIgnoredActor(this);
+	queryParams.bTraceComplex = true;
+
+	FCollisionObjectQueryParams objectParams{};
+	objectParams.AddObjectTypesToQuery(ECC_TreasureObject);
+	//objectParams.AddObjectTypesToQuery(ECC_LabyrinthWall);
+
+	GetWorld()->LineTraceSingleByObjectType(outHit, start, start + 1000.f * forward, objectParams, queryParams);
+
+
+	AActor* hitActor = outHit.GetActor();
+	if (!IsValid(hitActor))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Emerald, TEXT("No actor found!"));
+		return;
+	}
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Emerald, TEXT("Actor found!"));
+	if (hitActor->GetClass()->ImplementsInterface(UInteractionInterface::StaticClass()))
+	{
+		IInteractionInterface::Execute_OnInteract(hitActor);
+	}
+	FVector test = validationLocation;
 }
 
 // Called to bind functionality to input
