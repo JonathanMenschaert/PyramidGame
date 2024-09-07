@@ -17,6 +17,7 @@ void ATileBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetim
 	sharedParams.bIsPushBased = true;
 
 	DOREPLIFETIME_WITH_PARAMS_FAST(ATileBase, TileType, sharedParams);
+	DOREPLIFETIME_WITH_PARAMS_FAST(ATileBase, HasTreasure, sharedParams);
 
 }
 
@@ -56,6 +57,7 @@ void ATileBase::SetTileType(ETileType tileType)
 {
 	TileType = tileType;
 	MARK_PROPERTY_DIRTY_FROM_NAME(ATileBase, TileType, this);
+
 }
 
 void ATileBase::SetTileMetaData(uint8 data)
@@ -85,7 +87,9 @@ bool ATileBase::IsValidTreasureTile()
 
 void ATileBase::AddTreasure(int treasureIdx, int zoneIdx)
 {
+
 	HasTreasure = true;
+	MARK_PROPERTY_DIRTY_FROM_NAME(ATileBase, HasTreasure, this);
 	OnTreasureAdded(zoneIdx, treasureIdx);
 }
 

@@ -22,7 +22,13 @@ class PYRAMIDGAME_API IInteractionInterface
 public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
+	bool AllowsInteraction();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
 	void OnInteract();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
+	void OnInteractionFinished();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
 	void OnHoverEnter();

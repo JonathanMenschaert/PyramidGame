@@ -10,8 +10,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Util/InteractionInterface.h"
 
-#define ECC_TreasureObject ECollisionChannel::ECC_GameTraceChannel6
-#define ECC_LabyrinthWall ECollisionChannel::ECC_GameTraceChannel7
+#define ECC_InteractionObject ECollisionChannel::ECC_GameTraceChannel6
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -32,7 +31,7 @@ void APlayerCharacter::BeginPlay()
 	}
 }
 
-void APlayerCharacter::Move(const FInputActionValue& value)
+void APlayerCharacter::OnMove(const FInputActionValue& value)
 {
 	if (Controller)
 	{
@@ -52,7 +51,7 @@ void APlayerCharacter::Move(const FInputActionValue& value)
 	}
 }
 
-void APlayerCharacter::Look(const FInputActionValue& value)
+void APlayerCharacter::OnLook(const FInputActionValue& value)
 {
 	if (Controller)
 	{
@@ -70,28 +69,24 @@ void APlayerCharacter::Look(const FInputActionValue& value)
 	}
 }
 
-void APlayerCharacter::Interact(const FInputActionValue& value)
+void APlayerCharacter::OnInteract(const FInputActionValue& value)
 {
-	FHitResult outHit{};
+	if (!CanInteract())
+	{
+		return;
+	}
 
-	FVector forward;
-	FVector start;
-	GetTraceStartPoint(forward, start);
+	SER_OnInteraction();
+	
+	AActor* interactionActor{ GetInteractionActor() };
 
-	FVector validationLocation = GetActorLocation();
+	if (!IsValid(interactionActor))
+	{
+		OnInteractionFailed(false);
+		return;
+	}
 
-	FCollisionQueryParams queryParams{};
-	queryParams.AddIgnoredActor(this);
-	queryParams.bTraceComplex = true;
-
-	FCollisionObjectQueryParams objectParams{};
-	objectParams.AddObjectTypesToQuery(ECC_TreasureObject);
-	//objectParams.AddObjectTypesToQuery(ECC_LabyrinthWall);
-
-	GetWorld()->LineTraceSingleByObjectType(outHit, start, start + 1000.f * forward, objectParams, queryParams);
-
-
-	AActor* hitActor = outHit.GetActor();
+	/*AActor* hitActor = outHit.GetActor();
 	if (!IsValid(hitActor))
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Emerald, TEXT("No actor found!"));
@@ -101,8 +96,70 @@ void APlayerCharacter::Interact(const FInputActionValue& value)
 	if (hitActor->GetClass()->ImplementsInterface(UInteractionInterface::StaticClass()))
 	{
 		IInteractionInterface::Execute_OnInteract(hitActor);
+	}*/
+
+	if (interactionActor->GetClass()->ImplementsInterface(UInteractionInterface::StaticClass()))
+	{
+		if (IInteractionInterface::Execute_AllowsInteraction(interactionActor))
+		{
+			IInteractionInterface::Execute_OnInteract(interactionActor);
+			OnInteractionSuccess(false, interactionActor);
+		}
+		else
+		{
+			OnInteractionFailed(false);
+		}
 	}
-	FVector test = validationLocation;
+}
+
+bool APlayerCharacter::CanInteract_Implementation()
+{
+	return true;
+}
+
+AActor* APlayerCharacter::GetInteractionActor()
+{
+	FHitResult outHit{};
+
+	FVector forward;
+	FVector start;
+	GetTraceStartPoint(forward, start);
+
+	FCollisionQueryParams queryParams{};
+	queryParams.AddIgnoredActor(this);
+	queryParams.bTraceComplex = true;
+
+	FCollisionObjectQueryParams objectParams{};
+	objectParams.AddObjectTypesToQuery(ECC_InteractionObject);
+
+	GetWorld()->LineTraceSingleByObjectType(outHit, start, start + 1000.f * forward, objectParams, queryParams);
+
+	return outHit.GetActor();
+}
+
+void APlayerCharacter::SER_OnInteraction_Implementation()
+{
+	//Move this to seperate function
+	AActor* interactionActor{ GetInteractionActor() };
+
+	if (!IsValid(interactionActor))
+	{
+		OnInteractionFailed(true);
+		return;
+	}
+
+	if (interactionActor->GetClass()->ImplementsInterface(UInteractionInterface::StaticClass()))
+	{
+		if (IInteractionInterface::Execute_AllowsInteraction(interactionActor))
+		{
+			IInteractionInterface::Execute_OnInteract(interactionActor);
+			OnInteractionSuccess(true, interactionActor);
+		}
+		else
+		{
+			OnInteractionRepair();
+		}
+	}
 }
 
 // Called to bind functionality to input
@@ -117,8 +174,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	inputSystem->AddMappingContext(InputMapping, 0);
 
 	UEnhancedInputComponent* pEnhancedInput = Cast<UEnhancedInputComponent>(PlayerInputComponent);
-	pEnhancedInput->BindAction(InputConfig->InputLook, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
-	pEnhancedInput->BindAction(InputConfig->InputMove, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
-	pEnhancedInput->BindAction(InputConfig->InputInteract, ETriggerEvent::Started, this, &APlayerCharacter::Interact);
+	pEnhancedInput->BindAction(InputConfig->InputLook, ETriggerEvent::Triggered, this, &APlayerCharacter::OnLook);
+	pEnhancedInput->BindAction(InputConfig->InputMove, ETriggerEvent::Triggered, this, &APlayerCharacter::OnMove);
+	pEnhancedInput->BindAction(InputConfig->InputInteract, ETriggerEvent::Started, this, &APlayerCharacter::OnInteract);
 }
 

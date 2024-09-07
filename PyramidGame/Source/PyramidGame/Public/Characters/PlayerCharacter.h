@@ -30,13 +30,31 @@ protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
-	void Move(const FInputActionValue& value);
+	void OnMove(const FInputActionValue& value);
 
 	UFUNCTION()
-	void Look(const FInputActionValue& value);
+	void OnLook(const FInputActionValue& value);
 
 	UFUNCTION()
-	void Interact(const FInputActionValue& value);
+	void OnInteract(const FInputActionValue& value);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnInteractionFailed(bool isServer);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnInteractionSuccess(bool isServer, AActor* interactionActor);
+
+	UFUNCTION(BlueprintNativeEvent)
+	bool CanInteract();
+
+	UFUNCTION()
+	AActor* GetInteractionActor();
+
+	UFUNCTION(Server, Reliable, BlueprintCallable)
+	void SER_OnInteraction();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnInteractionRepair();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadonly, Category = "Input")
 	UInputMappingContext* InputMapping;

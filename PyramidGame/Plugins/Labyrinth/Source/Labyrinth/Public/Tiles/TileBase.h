@@ -51,11 +51,20 @@ protected:
 	UPROPERTY(Replicated, BlueprintReadOnly)
 	ETileType TileType = ETileType::HALLWAY;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly)
 	TArray<ETileDirection> TileDirections;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly)
 	TArray<ETileMetaData> TileMetaData;
+
+	UPROPERTY(Replicated, BlueprintReadOnly)
+	bool HasTreasure;
+
+	UPROPERTY(Replicated, BlueprintReadOnly)
+	int TreasureZoneIdx;
+
+	UPROPERTY(Replicated, BlueprintReadOnly)
+	int TreasureIdx;
 
 private:
 
@@ -63,6 +72,5 @@ private:
 	TMap<ETileDirection, ATileBase*> AdjacentTiles;
 	
 
-	bool HasTreasure;
 
 };
