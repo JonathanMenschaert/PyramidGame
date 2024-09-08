@@ -60,12 +60,6 @@ protected:
 	UPROPERTY(Replicated, BlueprintReadOnly)
 	bool HasTreasure;
 
-	UPROPERTY(Replicated, BlueprintReadOnly)
-	int TreasureZoneIdx;
-
-	UPROPERTY(Replicated, BlueprintReadOnly)
-	int TreasureIdx;
-
 private:
 
 	UPROPERTY()

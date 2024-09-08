@@ -12,6 +12,8 @@ struct FTreasureZone
 	GENERATED_BODY()
 
 public:
+
+	UPROPERTY(BlueprintReadOnly)
 	TArray<ATileBase*> Treasures;
 };
 
