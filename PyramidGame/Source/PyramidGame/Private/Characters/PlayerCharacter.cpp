@@ -59,6 +59,8 @@ void APlayerCharacter::OnLook(const FInputActionValue& value)
 		
 		AddControllerYawInput(lookVal.X);
 		PitchValue = FMath::Clamp(PitchValue - lookVal.Y, -PitchMinMax, PitchMinMax);
+		YawValue = GetControlRotation().Yaw;
+		SER_OnUpdateControlRotation(PitchValue, YawValue);
 	}
 }
 
@@ -134,17 +136,18 @@ AActor* APlayerCharacter::GetInteractionActor()
 	return outHit.GetActor();
 }
 
-void APlayerCharacter::MUL_OnUpdateControlRotation_Implementation(float pitchValue)
+void APlayerCharacter::MUL_OnUpdateControlRotation_Implementation(float pitchValue, float yawValue)
 {
 	if (!IsLocallyControlled())
 	{
 		PitchValue = pitchValue;
+		YawValue = yawValue;
 	}
 }
 
-void APlayerCharacter::SER_OnUpdateControlRotation_Implementation(float pitchValue)
+void APlayerCharacter::SER_OnUpdateControlRotation_Implementation(float pitchValue, float yawValue)
 {
-	MUL_OnUpdateControlRotation(pitchValue);
+	MUL_OnUpdateControlRotation(pitchValue, yawValue);
 }
 
 void APlayerCharacter::SER_OnInteraction_Implementation()

@@ -57,10 +57,10 @@ protected:
 	void OnInteractionRepair();
 
 	UFUNCTION(Server, Unreliable, BlueprintCallable)
-	void SER_OnUpdateControlRotation(float pitchValue);
+	void SER_OnUpdateControlRotation(float pitchValue, float yawValue);
 
 	UFUNCTION(NetMulticast, Unreliable, BlueprintCallable)
-	void MUL_OnUpdateControlRotation(float pitchValue);
+	void MUL_OnUpdateControlRotation(float pitchValue, float yawValue);
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadonly, Category = "Input")
 	UInputMappingContext* InputMapping;
