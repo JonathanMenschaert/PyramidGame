@@ -56,10 +56,27 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnInteractionRepair();
 
+	UFUNCTION(Server, Unreliable, BlueprintCallable)
+	void SER_OnUpdateControlRotation(float yawValue, float pitchValue);
+
+	UFUNCTION(NetMulticast, Unreliable, BlueprintCallable)
+	void MUL_OnUpdateControlRotation(float yawValue, float pitchValue);
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadonly, Category = "Input")
 	UInputMappingContext* InputMapping;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadonly, Category = "Input")
 	UInputConfig* InputConfig;	
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	float YawValue = 0.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	float YawMinMax = 30.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	float PitchValue = 0.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	float PitchMinMax = 90.f;
 };

@@ -57,15 +57,21 @@ void APlayerCharacter::OnLook(const FInputActionValue& value)
 	{
 		const FVector2D lookVal = value.Get<FVector2D>();
 
-		if (lookVal.X != 0.f)
+		float currentYaw = YawValue + lookVal.X;
+		YawValue = FMath::Clamp(currentYaw, -YawMinMax, YawMinMax);
+
+		if (!FMath::IsNearlyEqual(currentYaw, YawValue))
 		{
 			AddControllerYawInput(lookVal.X);
 		}
 
-		if (lookVal.Y != 0.f)
+
+		PitchValue = FMath::Clamp(PitchValue + lookVal.Y, -PitchMinMax, PitchMinMax);
+
+		/*if (lookVal.Y != 0.f)
 		{
 			AddControllerPitchInput(-lookVal.Y);
-		}
+		}*/
 	}
 }
 
@@ -141,6 +147,20 @@ AActor* APlayerCharacter::GetInteractionActor()
 	return outHit.GetActor();
 }
 
+void APlayerCharacter::MUL_OnUpdateControlRotation_Implementation(float yawValue, float pitchValue)
+{
+	if (!IsLocallyControlled())
+	{
+		YawValue = yawValue;
+		PitchValue = pitchValue;
+	}
+}
+
+void APlayerCharacter::SER_OnUpdateControlRotation_Implementation(float yawValue, float pitchValue)
+{
+	MUL_OnUpdateControlRotation(yawValue, pitchValue);
+}
+
 void APlayerCharacter::SER_OnInteraction_Implementation()
 {
 	//Move this to seperate function
@@ -172,10 +192,6 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	APlayerController* pPlayerController = Cast<APlayerController>(GetController());
-
-	/*UEnhancedInputLocalPlayerSubsystem* inputSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(pPlayerController->GetLocalPlayer());
-	inputSystem->ClearAllMappings();
-	inputSystem->AddMappingContext(InputMapping, 0);*/
 
 	UEnhancedInputComponent* pEnhancedInput = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	pEnhancedInput->BindAction(InputConfig->InputLook, ETriggerEvent::Triggered, this, &APlayerCharacter::OnLook);
