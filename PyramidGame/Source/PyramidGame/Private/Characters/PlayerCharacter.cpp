@@ -56,22 +56,9 @@ void APlayerCharacter::OnLook(const FInputActionValue& value)
 	if (Controller)
 	{
 		const FVector2D lookVal = value.Get<FVector2D>();
-
-		float currentYaw = YawValue + lookVal.X;
-		YawValue = FMath::Clamp(currentYaw, -YawMinMax, YawMinMax);
-
-		if (!FMath::IsNearlyEqual(currentYaw, YawValue))
-		{
-			AddControllerYawInput(lookVal.X);
-		}
-
-
+		
+		AddControllerYawInput(lookVal.X);
 		PitchValue = FMath::Clamp(PitchValue + lookVal.Y, -PitchMinMax, PitchMinMax);
-
-		/*if (lookVal.Y != 0.f)
-		{
-			AddControllerPitchInput(-lookVal.Y);
-		}*/
 	}
 }
 
