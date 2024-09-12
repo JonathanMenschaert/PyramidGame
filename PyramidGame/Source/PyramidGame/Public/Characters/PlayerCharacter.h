@@ -57,10 +57,10 @@ protected:
 	void OnInteractionRepair();
 
 	UFUNCTION(Server, Unreliable, BlueprintCallable)
-	void SER_OnUpdateControlRotation(float yawValue, float pitchValue);
+	void SER_OnUpdateControlRotation(float pitchValue);
 
 	UFUNCTION(NetMulticast, Unreliable, BlueprintCallable)
-	void MUL_OnUpdateControlRotation(float yawValue, float pitchValue);
+	void MUL_OnUpdateControlRotation(float pitchValue);
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadonly, Category = "Input")
 	UInputMappingContext* InputMapping;
@@ -68,13 +68,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadonly, Category = "Input")
 	UInputConfig* InputConfig;	
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	float YawValue = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	float YawMinMax = 30.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	float PitchValue = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
