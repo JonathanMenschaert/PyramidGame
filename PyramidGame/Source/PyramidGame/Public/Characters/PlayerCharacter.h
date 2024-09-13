@@ -79,4 +79,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	float PitchMinMax = 90.f;
+
+	UPROPERTY()
+	AActor* HoverActor;
 };

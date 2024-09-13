@@ -17,6 +17,7 @@ APlayerCharacter::APlayerCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	
 
 }
 
@@ -130,7 +131,7 @@ AActor* APlayerCharacter::GetInteractionActor()
 	GetWorld()->LineTraceSingleByObjectType(outHit, start, start + 250.f * forward, objectParams, queryParams);
 	if (IsLocallyControlled())
 	{
-		DrawDebugLine(GetWorld(), start, start + 250.f * forward, FColor::Red, false, 5.f, 0, 2.f);
+		//DrawDebugLine(GetWorld(), start, start + 250.f * forward, FColor::Red, false, 5.f, 0, 2.f);
 	}
 
 	return outHit.GetActor();
@@ -167,10 +168,6 @@ void APlayerCharacter::SER_OnInteraction_Implementation()
 		{
 			IInteractionInterface::Execute_OnInteract(interactionActor);
 			OnInteractionSuccess(true, interactionActor);
-		}
-		else
-		{
-			OnInteractionRepair();
 		}
 	}
 }
