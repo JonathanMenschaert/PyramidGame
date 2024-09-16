@@ -99,13 +99,13 @@ void APlayerCharacter::OnInteract(const FInputActionValue& value)
 		if (IInteractionInterface::Execute_AllowsInteraction(interactionActor))
 		{
 			IInteractionInterface::Execute_OnInteract(interactionActor);
-			OnInteractionSuccess(false, interactionActor);
-		}
+			OnInteractionSuccess(false);
+		}		
 		else
 		{
 			OnInteractionFailed(false);
 		}
-	}
+	}	
 }
 
 bool APlayerCharacter::CanInteract_Implementation()
@@ -167,9 +167,14 @@ void APlayerCharacter::SER_OnInteraction_Implementation()
 		if (IInteractionInterface::Execute_AllowsInteraction(interactionActor))
 		{
 			IInteractionInterface::Execute_OnInteract(interactionActor);
-			OnInteractionSuccess(true, interactionActor);
+			OnInteractionSuccess(true);
+		}
+		else
+		{
+			OnInteractionFailed(true);
 		}
 	}
+	
 }
 
 // Called to bind functionality to input

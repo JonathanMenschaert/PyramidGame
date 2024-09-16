@@ -25,6 +25,12 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void GetTraceStartPoint(FVector& forward, FVector& location);
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnInteractionFailed(bool isServer);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnInteractionSuccess(bool isServer);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -38,12 +44,6 @@ protected:
 	UFUNCTION()
 	void OnInteract(const FInputActionValue& value);
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void OnInteractionFailed(bool isServer);
-
-	UFUNCTION(BlueprintImplementableEvent)
-	void OnInteractionSuccess(bool isServer, AActor* interactionActor);
-
 	UFUNCTION(BlueprintNativeEvent)
 	bool CanInteract();
 
@@ -52,9 +52,6 @@ protected:
 
 	UFUNCTION(Server, Reliable, BlueprintCallable)
 	void SER_OnInteraction();
-
-	UFUNCTION(BlueprintImplementableEvent)
-	void OnInteractionRepair();
 
 	UFUNCTION(Server, Unreliable, BlueprintCallable)
 	void SER_OnUpdateControlRotation(float pitchValue, float yawValue);
