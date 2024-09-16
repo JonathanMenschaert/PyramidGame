@@ -22,6 +22,7 @@ public:
 	void AddTileDirection(ETileDirection tileDirection);
 	void SetTileType(ETileType tileType);
 	void SetTileMetaData(uint8 data);
+	void SetTileCoordinate(int x, int y);
 
 	void UpdateTile();
 
@@ -44,7 +45,7 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnTileMetaData"))
 	void OnTileMetaData(UPARAM(DisplayName = "Meta Data") const TArray<ETileMetaData>& metaData);
 	void OnTileMetaData_Implementation(const TArray<ETileMetaData>& metaData);
-
+	
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	TArray<ETileDirection> GetTreasureDirections() const;
 
@@ -59,6 +60,12 @@ protected:
 
 	UPROPERTY(Replicated, BlueprintReadOnly)
 	bool HasTreasure;
+
+	UPROPERTY(BlueprintReadOnly)
+	int CoordinateX;
+
+	UPROPERTY(BlueprintReadOnly)
+	int CoordinateY;
 
 private:
 

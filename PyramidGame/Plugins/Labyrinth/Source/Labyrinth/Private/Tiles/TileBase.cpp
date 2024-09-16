@@ -107,3 +107,9 @@ void ATileBase::OnTileMetaData_Implementation(const TArray<ETileMetaData>& metaD
 
 }
 
+void ATileBase::SetTileCoordinate(int x, int y)
+{
+	CoordinateX = x;
+	CoordinateY = y;
+}
+

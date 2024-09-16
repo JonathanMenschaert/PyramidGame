@@ -131,6 +131,7 @@ void ALabyrinthGenerator::PopulateFromImage(UTexture2D* image, int imagePixelAmo
 		
 		tile->SetTileType(static_cast<ETileType>(tileValue.G));
 		tile->SetTileMetaData(tileValue.B);
+		tile->SetTileCoordinate(x, y);
 	}
 }
 
