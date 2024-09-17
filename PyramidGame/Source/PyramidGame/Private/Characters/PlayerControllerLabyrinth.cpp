@@ -3,3 +3,7 @@
 
 #include "Characters/PlayerControllerLabyrinth.h"
 
+void APlayerControllerLabyrinth::SetActorInvisible(AActor* actorToHide)
+{
+	HiddenActors.Add(actorToHide);
+}

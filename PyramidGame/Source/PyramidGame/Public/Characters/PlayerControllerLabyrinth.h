@@ -10,5 +10,11 @@ UCLASS()
 class PYRAMIDGAME_API APlayerControllerLabyrinth : public APlayerController
 {
 	GENERATED_BODY()
+
+protected:
+
+	UFUNCTION(BlueprintCallable)
+	void SetActorInvisible(AActor* actorToHide);
+		
 	
 };
