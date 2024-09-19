@@ -18,7 +18,7 @@ void APlayerStateLabyrinth::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	sharedParams.bIsPushBased = true;
 
 	DOREPLIFETIME_WITH_PARAMS_FAST(APlayerStateLabyrinth, PlayerType, sharedParams);
-	DOREPLIFETIME_WITH_PARAMS_FAST(APlayerStateLabyrinth, MovesLeft, sharedParams);
+	DOREPLIFETIME_WITH_PARAMS_FAST(APlayerStateLabyrinth, PlayerName, sharedParams);
 }
 
 void APlayerStateLabyrinth::CopyProperties(APlayerState* playerState)
@@ -30,6 +30,7 @@ void APlayerStateLabyrinth::CopyProperties(APlayerState* playerState)
 	if (IsValid(ps))
 	{
 		ps->PlayerType = PlayerType;
+		ps->PlayerName = PlayerName;
 	}
 }
 
@@ -39,29 +40,8 @@ void APlayerStateLabyrinth::SetPlayerType(EPlayerType playerType)
 	MARK_PROPERTY_DIRTY_FROM_NAME(APlayerStateLabyrinth, PlayerType, this);
 }
 
-void APlayerStateLabyrinth::SetAmountMoves(int amountMoves)
+void APlayerStateLabyrinth::SetPlayerName(FText playerName)
 {
-	MovesLeft = amountMoves;
-	MARK_PROPERTY_DIRTY_FROM_NAME(APlayerStateLabyrinth, MovesLeft, this);
-}
-
-void APlayerStateLabyrinth::Move()
-{
-	--MovesLeft;
-	MARK_PROPERTY_DIRTY_FROM_NAME(APlayerStateLabyrinth, MovesLeft, this);
-}
-
-int APlayerStateLabyrinth::GetMovesLeft()
-{
-	return MovesLeft;
-}
-
-void APlayerStateLabyrinth::SER_Move_Implementation()
-{
-	Move();
-}
-
-void APlayerStateLabyrinth::SER_SetAmountMoves_Implementation(int amountMoves)
-{
-	SetAmountMoves(amountMoves);
+	PlayerName = playerName;
+	MARK_PROPERTY_DIRTY_FROM_NAME(APlayerStateLabyrinth, PlayerName, this);
 }
