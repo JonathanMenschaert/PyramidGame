@@ -82,18 +82,6 @@ void APlayerCharacter::OnInteract(const FInputActionValue& value)
 		return;
 	}
 
-	/*AActor* hitActor = outHit.GetActor();
-	if (!IsValid(hitActor))
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Emerald, TEXT("No actor found!"));
-		return;
-	}
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Emerald, TEXT("Actor found!"));
-	if (hitActor->GetClass()->ImplementsInterface(UInteractionInterface::StaticClass()))
-	{
-		IInteractionInterface::Execute_OnInteract(hitActor);
-	}*/
-
 	if (interactionActor->GetClass()->ImplementsInterface(UInteractionInterface::StaticClass()))
 	{
 		if (IInteractionInterface::Execute_AllowsInteraction(interactionActor))
