@@ -26,16 +26,16 @@ struct FLabyrinthGeneratorResult
 	TArray<ATileBase*> GeneratedTiles;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float SizeX;
+	float SizeX = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float SizeY;
+	float SizeY = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float TileSize;
+	float TileSize = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FVector CenterPoint;
+	FVector CenterPoint{};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FTreasureZone> TreasureZones;

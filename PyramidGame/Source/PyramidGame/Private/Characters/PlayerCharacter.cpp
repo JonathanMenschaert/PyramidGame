@@ -117,11 +117,7 @@ AActor* APlayerCharacter::GetInteractionActor()
 	objectParams.AddObjectTypesToQuery(ECC_InteractionObject);
 
 	GetWorld()->LineTraceSingleByObjectType(outHit, start, start + 250.f * forward, objectParams, queryParams);
-	if (IsLocallyControlled())
-	{
-		//DrawDebugLine(GetWorld(), start, start + 250.f * forward, FColor::Red, false, 5.f, 0, 2.f);
-	}
-
+	
 	return outHit.GetActor();
 }
 

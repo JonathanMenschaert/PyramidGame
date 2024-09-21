@@ -19,10 +19,10 @@ public:
 	UTexture2D* StartTemplate;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
-	int SizeX;
+	int SizeX = 0;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
-	int SizeY;
+	int SizeY = 0;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
 	TSubclassOf<ATileBase> TileClass;
@@ -31,7 +31,7 @@ public:
 	FVector2D StartTileCoordinate;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
-	float TileSize;
+	float TileSize = 100.f;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
 	int AmountOfZones = 5;

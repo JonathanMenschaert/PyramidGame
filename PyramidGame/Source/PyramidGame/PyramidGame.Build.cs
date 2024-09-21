@@ -14,7 +14,6 @@ public class PyramidGame : ModuleRules
 			"Engine", 
 			"InputCore",
 			"EnhancedInput",
-            "AIModule",
             "Labyrinth",
 			"NetCore",
 			"UMG"
