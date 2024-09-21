@@ -16,12 +16,12 @@ class PYRAMIDGAME_API UInputConfig : public UDataAsset
 	GENERATED_BODY()
 public:
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
 	UInputAction* InputMove;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadonly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadonly, Category = "Input")
 	UInputAction* InputLook;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadonly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadonly, Category = "Input")
 	UInputAction* InputInteract;
 };

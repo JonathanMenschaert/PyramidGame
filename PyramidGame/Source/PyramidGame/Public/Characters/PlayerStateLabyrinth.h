@@ -25,15 +25,15 @@ protected:
 	
 	virtual void CopyProperties(APlayerState* playerState) override;
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "PlayerInfo")
 	void SetPlayerType(EPlayerType playerType);
 
 	UFUNCTION(BlueprintCallable)
 	void SetPlayerName(FText playerName);
 
-	UPROPERTY(Replicated, BlueprintReadOnly)
+	UPROPERTY(Replicated, BlueprintReadOnly, Category = "PlayerInfo")
 	EPlayerType PlayerType;
 
-	UPROPERTY(Replicated, BlueprintReadOnly)
+	UPROPERTY(Replicated, BlueprintReadOnly, Category = "PlayerInfo")
 	FText PlayerName = FText::FromString("Player");
 };

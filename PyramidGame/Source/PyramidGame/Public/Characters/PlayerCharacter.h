@@ -22,13 +22,13 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintImplementableEvent, Category = "Interaction")
 	void GetTraceStartPoint(FVector& forward, FVector& location);
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintImplementableEvent, Category = "Interaction")
 	void OnInteractionFailed(bool isServer);
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintImplementableEvent, Category = "Interaction")
 	void OnInteractionSuccess(bool isServer);
 
 protected:
@@ -44,19 +44,19 @@ protected:
 	UFUNCTION()
 	void OnInteract(const FInputActionValue& value);
 
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, Category = "Interaction")
 	bool CanInteract();
 
 	UFUNCTION()
 	AActor* GetInteractionActor();
 
-	UFUNCTION(Server, Reliable, BlueprintCallable)
+	UFUNCTION(Server, Reliable, BlueprintCallable, Category = "Network")
 	void SER_OnInteraction();
 
-	UFUNCTION(Server, Unreliable, BlueprintCallable)
+	UFUNCTION(Server, Unreliable, BlueprintCallable, Category = "Network")
 	void SER_OnUpdateControlRotation(float pitchValue, float yawValue);
 
-	UFUNCTION(NetMulticast, Unreliable, BlueprintCallable)
+	UFUNCTION(NetMulticast, Unreliable, BlueprintCallable, Category = "Network")
 	void MUL_OnUpdateControlRotation(float pitchValue, float yawValue);
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadonly, Category = "Input")

@@ -34,37 +34,37 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnTileDirectionsUpdated"))
+	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnTileDirectionsUpdated"), Category = "Tile")
 	void UpdateTileDirections(UPARAM(DisplayName = "Directions") const TArray<ETileDirection>&directions, UPARAM(DisplayName = "Adjacent Tiles") const TMap<ETileDirection, ATileBase*>& adjacentTiles);
 	void UpdateTileDirections_Implementation(const TArray<ETileDirection>& directions, const TMap<ETileDirection, ATileBase*>& adjacentTiles);
 
-	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnTreasureAdded"))
+	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnTreasureAdded"), Category = "Tile")
 	void OnTreasureAdded(UPARAM(DisplayName = "Zone Id") int zoneIdx, UPARAM(DisplayName = "Treasure Id") int treasureIdx);
 	void OnTreasureAdded_Implementation(int zoneIdx, int treasureIdx);
 
-	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnTileMetaData"))
+	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnTileMetaData"), Category = "Tile")
 	void OnTileMetaData(UPARAM(DisplayName = "Meta Data") const TArray<ETileMetaData>& metaData);
 	void OnTileMetaData_Implementation(const TArray<ETileMetaData>& metaData);
 	
-	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Tile")
 	TArray<ETileDirection> GetTreasureDirections() const;
 
-	UPROPERTY(Replicated, BlueprintReadOnly)
+	UPROPERTY(Replicated, BlueprintReadOnly, Category = "Tile")
 	ETileType TileType = ETileType::HALLWAY;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, Category = "Tile")
 	TArray<ETileDirection> TileDirections;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, Category = "Tile")
 	TArray<ETileMetaData> TileMetaData;
 
-	UPROPERTY(Replicated, BlueprintReadOnly)
+	UPROPERTY(Replicated, BlueprintReadOnly, Category = "Tile")
 	bool HasTreasure;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, Category = "Tile")
 	int CoordinateX;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, Category = "Tile")
 	int CoordinateY;
 
 private:

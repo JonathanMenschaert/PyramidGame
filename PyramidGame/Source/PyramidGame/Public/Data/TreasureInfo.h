@@ -16,10 +16,10 @@ class PYRAMIDGAME_API UTreasureInfo : public UDataAsset
 
 public:
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "TreasureInfo")
 	FText Description;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "TreasureInfo")
 	UMaterialInstance* TreasureImage;
 	
 };

@@ -100,6 +100,7 @@ void ALabyrinthGenerator::ResetGenerator()
 	Tiles.Empty();
 }
 
+//Load data from image
 void ALabyrinthGenerator::PopulateFromImage(UTexture2D* image, int imagePixelAmount)
 {
 	image->UpdateResource();

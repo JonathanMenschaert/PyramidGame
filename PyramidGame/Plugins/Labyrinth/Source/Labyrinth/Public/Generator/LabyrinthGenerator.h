@@ -29,7 +29,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnGeneratorFinished"))
+	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnGeneratorFinished"), Category = "Generator")
 	void OnGeneratorFinished(UPARAM(DisplayName = "Result") const FLabyrinthGeneratorResult& result);
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Generator")
@@ -38,15 +38,10 @@ protected:
 private:
 
 	void ResetGenerator();
-
 	void PopulateFromImage(UTexture2D* image, int imagePixelAmount);
-
 	void TrySetTileDirection(ATileBase* tile, int neighbourIdx, int x, int y, uint8 directionValue, ETileDirection direction);
-
 	void AddTreasuresZones(int amountZones, int tileRadius, int treasuresPerZone);
-
 	void AddTreasuresToZone(int zoneIdx, const FVector2f& tileCoordinates, int zoneRadius, int treasuresLeft);
-
 	bool IsZoneCenterValid(const TArray<FVector2f>& zoneCenters, const FVector2f& newZoneCenter, float minSpacingSq);
 
 	inline void IndexToCoordinate(int i, int& x, int& y) const;

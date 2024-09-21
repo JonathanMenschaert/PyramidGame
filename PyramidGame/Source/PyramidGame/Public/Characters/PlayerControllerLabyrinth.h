@@ -13,7 +13,7 @@ class PYRAMIDGAME_API APlayerControllerLabyrinth : public APlayerController
 
 protected:
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Rendering")
 	void SetActorInvisible(AActor* actorToHide);
 		
 	
